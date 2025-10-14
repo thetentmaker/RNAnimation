@@ -1,20 +1,20 @@
 {
-  "root": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation",
-  "reactNativePath": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/node_modules/react-native",
+  "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation",
+  "reactNativePath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native",
   "reactNativeVersion": "0.82",
   "dependencies": {
     "react-native-safe-area-context": {
-      "root": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/node_modules/react-native-safe-area-context",
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native-safe-area-context",
       "name": "react-native-safe-area-context",
       "platforms": {
         "ios": {
-          "podspecPath": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec",
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native-safe-area-context/react-native-safe-area-context.podspec",
           "version": "5.6.1",
           "configurations": [],
           "scriptPhases": []
         },
         "android": {
-          "sourceDir": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/node_modules/react-native-safe-area-context/android",
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native-safe-area-context/android",
           "packageImportPath": "import com.th3rdwave.safeareacontext.SafeAreaContextPackage;",
           "packageInstance": "new SafeAreaContextPackage()",
           "buildTypes": [],
@@ -23,7 +23,7 @@
             "RNCSafeAreaProviderComponentDescriptor",
             "RNCSafeAreaViewComponentDescriptor"
           ],
-          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
           "cxxModuleCMakeListsModuleName": null,
           "cxxModuleCMakeListsPath": null,
           "cxxModuleHeaderName": null,
@@ -194,7 +194,7 @@
         {
           "name": "--path <path>",
           "description": "Path to the React Native project root.",
-          "default": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/ios"
+          "default": "/Users/jaeho/Documents/workspace_rn/RNAnimation/ios"
         },
         {
           "name": "--platform <string>",
@@ -494,16 +494,16 @@
   "assets": [],
   "project": {
     "ios": {
-      "sourceDir": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/ios",
+      "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/ios",
       "xcodeProject": {
-        "name": "RNAnimation.xcodeproj",
+        "name": "RNAnimation.xcworkspace",
         "path": ".",
-        "isWorkspace": false
+        "isWorkspace": true
       },
       "assets": []
     },
     "android": {
-      "sourceDir": "/Users/jaeho/Documents/workspace_rn/MoneyManager/RNAnimation/android",
+      "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/android",
       "appName": "app",
       "packageName": "com.rnanimation",
       "applicationId": "com.rnanimation",
