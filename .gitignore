@@ -81,4 +81,11 @@ coverage/
 # Misc
 .expo/
 .expo-shared/
+# Ruby / CocoaPods
+
+# Ruby / CocoaPods
+/ios/Pods/
+/vendor/bundle/
+.bundle/
+
 
