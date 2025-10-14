@@ -7,7 +7,7 @@
 import React from 'react';
 import { StatusBar, useColorScheme, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AnimatedComponents from './src/chapter2/AnimatedComponents';
+import AnimatedValue from './src/chapter2/AnimatedValue';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -15,7 +15,7 @@ function App() {
   return (
     <SafeAreaProvider style={styles.container}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AnimatedComponents />
+      <AnimatedValue />
     </SafeAreaProvider>
   );
 }
