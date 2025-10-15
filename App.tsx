@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import DrawerMenu from './src/chapter3/DrawerMenu';
+import Collapse from './src/chapter3/Collapse';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <DrawerMenu />
+      <Collapse />
     </SafeAreaProvider>
   );
 }
