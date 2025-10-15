@@ -74,7 +74,7 @@ const CollapseItem = ({ item }: CollapseItemProps) => {
 
 const Collapse = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={styles.safeArea}>
       {collapseData.map((item, index) => (
         <CollapseItem key={index} item={item} />
       ))}
@@ -110,5 +110,8 @@ const styles = StyleSheet.create({
   iconContainer: {
     flexShrink: 1,
     marginLeft: 10,
+  },
+  safeArea: {
+    flex: 1,
   },
 });
