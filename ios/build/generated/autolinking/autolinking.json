@@ -3,6 +3,306 @@
   "reactNativePath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native",
   "reactNativeVersion": "0.82",
   "dependencies": {
+    "@react-native-vector-icons/ant-design": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ant-design",
+      "name": "@react-native-vector-icons/ant-design",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ant-design/react-native-vector-icons-ant-design.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ant-design/android",
+          "packageImportPath": "import com.reactnativevectoricons.ant_design.VectorIconsAntDesignPackage;",
+          "packageInstance": "new VectorIconsAntDesignPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsAntDesign",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ant-design/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/entypo": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/entypo",
+      "name": "@react-native-vector-icons/entypo",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/entypo/react-native-vector-icons-entypo.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/entypo/android",
+          "packageImportPath": "import com.reactnativevectoricons.entypo.VectorIconsEntypoPackage;",
+          "packageInstance": "new VectorIconsEntypoPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsEntypo",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/entypo/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/evil-icons": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/evil-icons",
+      "name": "@react-native-vector-icons/evil-icons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/evil-icons/react-native-vector-icons-evil-icons.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/evil-icons/android",
+          "packageImportPath": "import com.reactnativevectoricons.evil_icons.VectorIconsEvilIconsPackage;",
+          "packageInstance": "new VectorIconsEvilIconsPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsEvilIcons",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/evil-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/feather": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/feather",
+      "name": "@react-native-vector-icons/feather",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/feather/react-native-vector-icons-feather.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/feather/android",
+          "packageImportPath": "import com.reactnativevectoricons.feather.VectorIconsFeatherPackage;",
+          "packageInstance": "new VectorIconsFeatherPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsFeather",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/feather/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/fontawesome5": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome5",
+      "name": "@react-native-vector-icons/fontawesome5",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome5/react-native-vector-icons-fontawesome5.podspec",
+          "version": "12.2.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome5/android",
+          "packageImportPath": "import com.reactnativevectoricons.fontawesome5.VectorIconsFontAwesome5Package;",
+          "packageInstance": "new VectorIconsFontAwesome5Package()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsFontAwesome5",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome5/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/fontawesome6": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome6",
+      "name": "@react-native-vector-icons/fontawesome6",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome6/react-native-vector-icons-fontawesome6.podspec",
+          "version": "12.2.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome6/android",
+          "packageImportPath": "import com.reactnativevectoricons.fontawesome6.VectorIconsFontAwesome6Package;",
+          "packageInstance": "new VectorIconsFontAwesome6Package()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsFontAwesome6",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/fontawesome6/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/foundation": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/foundation",
+      "name": "@react-native-vector-icons/foundation",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/foundation/react-native-vector-icons-foundation.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/foundation/android",
+          "packageImportPath": "import com.reactnativevectoricons.foundation.VectorIconsFoundationPackage;",
+          "packageInstance": "new VectorIconsFoundationPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsFoundation",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/foundation/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/ionicons": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ionicons",
+      "name": "@react-native-vector-icons/ionicons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ionicons/react-native-vector-icons-ionicons.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ionicons/android",
+          "packageImportPath": "import com.reactnativevectoricons.ionicons.VectorIconsIoniconsPackage;",
+          "packageInstance": "new VectorIconsIoniconsPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsIonicons",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/ionicons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/material-icons": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/material-icons",
+      "name": "@react-native-vector-icons/material-icons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/material-icons/react-native-vector-icons-material-icons.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/material-icons/android",
+          "packageImportPath": "import com.reactnativevectoricons.material_icons.VectorIconsMaterialIconsPackage;",
+          "packageInstance": "new VectorIconsMaterialIconsPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsMaterialIcons",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/material-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/octicons": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/octicons",
+      "name": "@react-native-vector-icons/octicons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/octicons/react-native-vector-icons-octicons.podspec",
+          "version": "20.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/octicons/android",
+          "packageImportPath": "import com.reactnativevectoricons.octicons.VectorIconsOcticonsPackage;",
+          "packageInstance": "new VectorIconsOcticonsPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsOcticons",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/octicons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/simple-line-icons": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/simple-line-icons",
+      "name": "@react-native-vector-icons/simple-line-icons",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/simple-line-icons/react-native-vector-icons-simple-line-icons.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/simple-line-icons/android",
+          "packageImportPath": "import com.reactnativevectoricons.simple_line_icons.VectorIconsSimpleLineIconsPackage;",
+          "packageInstance": "new VectorIconsSimpleLineIconsPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsSimpleLineIcons",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/simple-line-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "@react-native-vector-icons/zocial": {
+      "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/zocial",
+      "name": "@react-native-vector-icons/zocial",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/zocial/react-native-vector-icons-zocial.podspec",
+          "version": "12.3.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/zocial/android",
+          "packageImportPath": "import com.reactnativevectoricons.zocial.VectorIconsZocialPackage;",
+          "packageInstance": "new VectorIconsZocialPackage()",
+          "buildTypes": [],
+          "libraryName": "VectorIconsZocial",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/@react-native-vector-icons/zocial/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "react-native-safe-area-context": {
       "root": "/Users/jaeho/Documents/workspace_rn/RNAnimation/node_modules/react-native-safe-area-context",
       "name": "react-native-safe-area-context",
