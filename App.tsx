@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Collapse from './src/chapter3/Collapse';
+import ProgressBar from './src/chapter3/ProgressBar';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <Collapse />
+      <ProgressBar />
     </SafeAreaProvider>
   );
 }
