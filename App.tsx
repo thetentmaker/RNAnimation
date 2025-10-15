@@ -5,28 +5,15 @@
  * @format
  */
 import React from 'react';
-import { StatusBar, useColorScheme, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Snackbar from './src/chapter3/Snackbar';
+import DrawerMenu from './src/chapter3/DrawerMenu';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
-
   return (
-    <SafeAreaProvider style={styles.container}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Snackbar />
+    <SafeAreaProvider>
+      <DrawerMenu />
     </SafeAreaProvider>
   );
 }
 
-
 export default App;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    // justifyContent: 'center',
-    // alignItems: 'center',
-  },
-});
