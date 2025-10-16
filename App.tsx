@@ -5,14 +5,13 @@
  * @format
  */
 import React from 'react';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import ProgressBar from './src/chapter3/ProgressBar';
+import Skeleton from './src/chapter3/Skeleton';
 
 function App() {
   return (
-    <SafeAreaProvider>
-      <ProgressBar />
-    </SafeAreaProvider>
+    // <SafeAreaProvider>
+    <Skeleton />
+    // </SafeAreaProvider>
   );
 }
 
