@@ -5,12 +5,12 @@
  * @format
  */
 import React from 'react';
-import Skeleton from './src/chapter3/Skeleton';
+import SnowAnimation from './src/chapter3/SnowAnimation';
 
 function App() {
   return (
     // <SafeAreaProvider>
-    <Skeleton />
+    <SnowAnimation />
     // </SafeAreaProvider>
   );
 }
