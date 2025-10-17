@@ -25,7 +25,7 @@ const ProgressBar = () => {
       }
     }
   };
-  // 자동으로 100%까지 채워주는 역ㅏ, 중간중간 멈추는 액션 추가
+  // 자동으로 100%까지 채워주는 역할, 중간중간 멈추는 액션 추가
   const onPressAutoRun = () => {
     console.log('auto run');
     Animated.sequence([
