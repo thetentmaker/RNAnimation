@@ -22,8 +22,8 @@ React Native의 `Animated` API를 활용하여 다양한 UI 컴포넌트를 구�
 
 ### 1.1 Snackbar 만들기
 
-<video src="./screenshot/snackbar.mp4" width="300" controls loop muted><Video>
-[![Watch the video]()](./screenshot/snackbar.mp4)
+▶ [Click here to watch snackbar.mp4](./screenshot/snackbar.mp4)
+
 
 
 #### 📝 설명
