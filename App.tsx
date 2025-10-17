@@ -5,12 +5,12 @@
  * @format
  */
 import React from 'react';
-import LayoutAnimationPageHeader from './src/chapter4/LayoutAnimationPageHeader';
+import LayoutAnimationCollaps from './src/chapter4/LayoutAnimationCollaps';
 
 function App() {
   return (
     // <SafeAreaProvider>
-    <LayoutAnimationPageHeader />
+    <LayoutAnimationCollaps />
     // </SafeAreaProvider>
   );
 }
