@@ -499,31 +499,8 @@ rotate: animValue.interpolate({
 
 ---
 
-## 📂 프로젝트 구조
-
-```
-RNAnimation/
-├── src/
-│   ├── chapter2/          # Animated 기초
-│   ├── chapter3/          # Animated 심화 실습 ⭐
-│   │   ├── Snackbar.tsx
-│   │   ├── DrawerMenu.tsx
-│   │   ├── Collapse.tsx
-│   │   ├── ProgressBar.tsx
-│   │   ├── Skeleton.tsx
-│   │   └── SnowAnimation.tsx
-│   └── utils/
-│       └── data.js
-├── App.tsx
-└── README.md
-```
-
----
-
 ## 📖 참고 자료
 
 - [React Native Animated API 공식 문서](https://reactnative.dev/docs/animated)
 - [React Native Easing 함수](https://reactnative.dev/docs/easing)
 - [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
-
-_다음 챕터: LayoutAnimation, Interaction Manager, PanResponder 등이 추가될 예정입니다._
