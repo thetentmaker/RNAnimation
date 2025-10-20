@@ -1,6 +1,8 @@
 import {
+  Animated,
   Button,
   Modal,
+  PanResponder,
   Pressable,
   Text,
   TouchableWithoutFeedback,
@@ -8,18 +10,39 @@ import {
 } from 'react-native';
 import Icon from '@react-native-vector-icons/entypo';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 const PanResponderModal = () => {
+  const renderCount = useRef(0);
+  const interpolateAnim = useRef(new Animated.Value(0)).current;
   const [show, setShow] = useState(false);
   const { bottom } = useSafeAreaInsets();
+  console.log('renderCount', renderCount);
+  renderCount.current++;
 
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderMove: (event, gestureState) => {
+      if (gestureState.dy > 100) {
+        hideMode();
+      }
+    },
+  });
   const showMode = () => {
-    console.log('showMode');
     setShow(true);
+    Animated.timing(interpolateAnim, {
+      toValue: 1,
+      duration: 300,
+      useNativeDriver: false,
+    }).start();
   };
   const hideMode = () => {
-    console.log('hideMode');
-    setShow(false);
+    Animated.timing(interpolateAnim, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      setShow(false);
+    });
   };
 
   return (
@@ -27,44 +50,53 @@ const PanResponderModal = () => {
       <View style={{ marginTop: 100 }}>
         <Button title="모달 보여주기" onPress={showMode} />
       </View>
-      {show && (
-        <>
-          {/* menu background */}
+      <>
+        {/* menu background */}
+        {show && (
           <TouchableWithoutFeedback onPress={hideMode}>
-            <View
+            <Animated.View
               style={{
                 position: 'absolute',
                 width: '100%',
                 height: '100%',
                 backgroundColor: '#00000090',
+                opacity: interpolateAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0, 1],
+                }),
               }}
             />
           </TouchableWithoutFeedback>
-          <View
-            style={{
-              position: 'absolute',
-              bottom: 0,
-              padding: 20,
-              borderWidth: 1,
-              paddingBottom: 20 + bottom,
-              backgroundColor: 'white',
-              width: '100%',
-              borderTopLeftRadius: 8,
-              borderTopRightRadius: 8,
-            }}
-          >
-            {data.map(item => (
-              <ListItem
-                key={item.title}
-                icon={item.icon}
-                color={item.color}
-                title={item.title}
-                onPress={hideMode}
-              />
-            ))}
-          </View>
-        </>
-      )}
+        )}
+        {/* menu content */}
+        <Animated.View
+          {...panResponder.panHandlers}
+          style={{
+            position: 'absolute',
+            bottom: interpolateAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [-500, 0],
+            }),
+            padding: 20,
+            borderWidth: 1,
+            paddingBottom: 20 + bottom,
+            backgroundColor: 'white',
+            width: '100%',
+            borderTopLeftRadius: 8,
+            borderTopRightRadius: 8,
+          }}
+        >
+          {data.map(item => (
+            <ListItem
+              key={item.title}
+              icon={item.icon}
+              color={item.color}
+              title={item.title}
+              onPress={hideMode}
+            />
+          ))}
+        </Animated.View>
+      </>
     </View>
   );
 };
