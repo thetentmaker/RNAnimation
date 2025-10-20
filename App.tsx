@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import PanResponderBannerSlider from './src/chapter6/PanResponderBannerSlider';
+import PanResponderFontSlider from './src/chapter6/PanResponderFontSlider';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <PanResponderBannerSlider />
+      <PanResponderFontSlider />
     </SafeAreaProvider>
   );
 }

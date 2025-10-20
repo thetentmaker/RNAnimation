@@ -7,6 +7,7 @@ import {
   TouchableWithoutFeedback,
   PanResponder,
 } from 'react-native';
+import repeat from '../utils/Loop';
 
 const { width } = Dimensions.get('window');
 
@@ -109,7 +110,3 @@ const PanResponderBannerSlider = () => {
 };
 
 export default PanResponderBannerSlider;
-
-// 가벼운 유틸: count만큼 렌더함수를 호출해 배열을 생성
-const repeat = <T,>(count: number, render: (index: number) => T): T[] =>
-  Array.from({ length: count }, (_, index) => render(index));
