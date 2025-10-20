@@ -1,6 +1,12 @@
-import { Text, TouchableWithoutFeedback, View } from 'react-native';
+import {
+  Animated,
+  PanResponder,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import repeat from '../utils/Loop';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 const BOX_SIZE = 50;
 const CIRCLE_SIZE = 10;
@@ -24,9 +30,40 @@ const FONT = [
 ];
 
 const PanResponderFontSlider = () => {
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: (event, gestureState) => true,
+    onStartShouldSetPanResponder: (event, gestureState) => true,
+    onPanResponderStart: (event, gestureState) => {
+      console.log('onPanResponderStart', event, gestureState);
+    },
+    onPanResponderMove: (event, gestureState) => {
+      console.log('onPanResponderMove', event, gestureState);
+      circleAnim.setValue(gestureState.dx + step * BOX_SIZE);
+    },
+    onPanResponderEnd: (event, gestureState) => {
+      console.log('onPanResponderEnd', event, gestureState);
+      const fontStep = step + Math.round(gestureState.dx / 50);
+      const toValue = fontStep * BOX_SIZE;
+      setStep(fontStep);
+      Animated.spring(circleAnim, {
+        toValue,
+        friction: 7,
+        tension: 50,
+        useNativeDriver: true,
+      }).start();
+    },
+  });
+
+  const circleAnim = useRef(new Animated.Value(0)).current;
   const [step, setStep] = useState(0);
   const onPress = (index: number) => () => {
     setStep(index);
+    Animated.spring(circleAnim, {
+      toValue: index * BOX_SIZE,
+      friction: 7,
+      tension: 50,
+      useNativeDriver: true,
+    }).start();
   };
 
   return (
@@ -67,6 +104,7 @@ const PanResponderFontSlider = () => {
                     height: BOX_SIZE,
                     justifyContent: 'center',
                     alignItems: 'center',
+                    borderWidth: 1,
                   }}
                 >
                   <View
@@ -81,14 +119,16 @@ const PanResponderFontSlider = () => {
               </TouchableWithoutFeedback>
             ))}
           </View>
-          <View
+          <Animated.View
+            {...panResponder.panHandlers}
             style={{
-              width: 20,
-              height: 20,
+              width: CIRCLE_SIZE,
+              height: CIRCLE_SIZE,
               backgroundColor: '#333',
               position: 'absolute',
-              left: BOX_SIZE / 2 - CIRCLE_SIZE / 2 + step * BOX_SIZE,
-              borderRadius: CIRCLE_SIZE,
+              left: BOX_SIZE / 2 - CIRCLE_SIZE / 2,
+              borderRadius: 100,
+              transform: [{ translateX: circleAnim }],
             }}
           />
         </View>
