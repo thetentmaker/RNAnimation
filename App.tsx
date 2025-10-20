@@ -5,13 +5,13 @@
  * @format
  */
 import React from 'react';
-import PanResponderModal from './src/chapter6/PanResponderModal';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import PanResponderBannerSlider from './src/chapter6/PanResponderBannerSlider';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <PanResponderModal />
+      <PanResponderBannerSlider />
     </SafeAreaProvider>
   );
 }
