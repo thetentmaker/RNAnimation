@@ -5,12 +5,12 @@
  * @format
  */
 import React from 'react';
-import InteractionManagerIntro from './src/chapter5/InteractionManagerIntro';
+import PanResponderIntro from './src/chapter6/PanResponderIntro';
 
 function App() {
   return (
     // <SafeAreaProvider>
-    <InteractionManagerIntro />
+    <PanResponderIntro />
     // </SafeAreaProvider>
   );
 }
