@@ -5,12 +5,12 @@
  * @format
  */
 import React from 'react';
-import PanResponderIntro from './src/chapter6/PanResponderIntro';
+import PanResponderBall from './src/chapter6/PanResponderBall';
 
 function App() {
   return (
     // <SafeAreaProvider>
-    <PanResponderIntro />
+    <PanResponderBall />
     // </SafeAreaProvider>
   );
 }
