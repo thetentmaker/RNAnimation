@@ -5,12 +5,12 @@
  * @format
  */
 import React from 'react';
-import LayoutAnimationCollaps from './src/chapter4/LayoutAnimationCollaps';
+import InteractionManagerIntro from './src/chapter5/InteractionManagerIntro';
 
 function App() {
   return (
     // <SafeAreaProvider>
-    <LayoutAnimationCollaps />
+    <InteractionManagerIntro />
     // </SafeAreaProvider>
   );
 }
