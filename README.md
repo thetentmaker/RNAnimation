@@ -9,10 +9,8 @@ React Native에서 제공하는 다양한 애니메이션 기법을 학습하고
 ## 📖 목차
 
 1. [Animated 심화 실습](#1-animated-심화-실습)
-2. LayoutAnimation (예정)
-3. Interaction Manager (예정)
-4. PanResponder를 활용한 제스처 인식 (예정)
-5. LayoutEvent로 상호작용 감지하기 (예정)
+2. [PanResponder를 활용한 제스처 인식](#2-panresponder를-활용한-제스처-인식)
+3. LayoutEvent로 상호작용 감지하기 (예정)
 6. FlatList 스크롤 데이터 감지 (예정)
 7. 유튜브 뮤직 클론 코딩 (예정)
 
@@ -63,12 +61,6 @@ const onPressButton = () => {
 };
 ```
 
-#### 🔑 핵심 포인트
-
-- `sequence`를 사용하여 "올라오기 → 대기 → 내려가기" 3단계 애니메이션 구현
-- `useNativeDriver: true`로 성능 최적화
-- `translateY`로 수직 이동 애니메이션 적용
-
 ---
 
 ### 1.2 Drawer Menu 만들기
@@ -83,8 +75,6 @@ const onPressButton = () => {
 
 - `translateX`를 활용한 가로 슬라이드 애니메이션
 - `interpolate`로 여러 스타일 속성 동시 제어
-- Backdrop 배경 효과 구현
-- `Dimensions`로 화면 크기에 반응하는 애니메이션
 
 #### 💻 핵심 코드
 
@@ -129,12 +119,6 @@ const width = Dimensions.get('window').width;
   ]}
 />
 ```
-
-#### 🔑 핵심 포인트
-
-- 하나의 `Animated.Value`로 메뉴 위치와 배경 투명도를 동시에 제어
-- `interpolate`의 `outputRange`에 컬러 값도 적용 가능
-- `Dimensions`로 다양한 화면 크기에 대응
 
 ---
 
@@ -201,12 +185,6 @@ const onPress = () => {
   <MaterialIcons name="expand-more" />
 </Animated.View>
 ```
-
-#### 🔑 핵심 포인트
-
-- `height` 애니메이션은 `useNativeDriver: false` 필수
-- `rotate` 값에 문자열 (`'180deg'`) 사용 가능
-- 각 아이템마다 독립적인 `Animated.Value` 사용
 
 ---
 
@@ -284,13 +262,6 @@ const onPressAutoRun = () => {
 />;
 ```
 
-#### 🔑 핵심 포인트
-
-- `spring` 애니메이션으로 자연스러운 탄성 효과
-- `sequence`로 여러 단계를 순차적으로 진행
-- `interpolate`로 숫자 값을 퍼센트 문자열로 변환
-- `ref`로 클릭 횟수 추적 및 제한
-
 ---
 
 ### 1.5 Skeleton 로딩 UI 만들기
@@ -351,21 +322,6 @@ useEffect(() => {
 </Animated.View>;
 ```
 
-#### 🔑 핵심 포인트
-
-- `Animated.loop`로 무한 반복 애니메이션 구현
-- `LinearGradient`로 빛나는 효과 표현
-- `useNativeDriver: true`로 성능 최적화 (translateX는 지원)
-- **주의**: `left` 속성은 native driver 미지원 → `translateX` 사용 필수
-
-#### ⚠️ 주의사항
-
-Native Driver 사용 시 지원되는 속성:
-
-- ✅ `transform` (translateX, translateY, scale, rotate)
-- ✅ `opacity`
-- ❌ `left`, `right`, `top`, `bottom`, `width`, `height`
-
 ---
 
 ### 1.6 눈 내리는 배경 만들기
@@ -420,14 +376,6 @@ Native Driver 사용 시 지원되는 속성:
   })}
 </View>
 ```
-
-#### 🔑 핵심 포인트
-
-- `Array.from({ length: 50 })`로 50개의 눈송이 생성
-- 각 눈송이마다 독립적인 `Animated.Value` 사용
-- `delay`를 인덱스에 비례하게 설정하여 자연스러운 효과
-- `Math.random()`으로 랜덤한 가로 위치 배치
-- `position: 'absolute'`로 요소들을 겹쳐서 배치
 
 ---
 
@@ -499,8 +447,336 @@ rotate: animValue.interpolate({
 
 ---
 
+## 2. PanResponder를 활용한 제스처 인식
+
+React Native의 `PanResponder` API를 활용하여 사용자의 터치 제스처를 감지하고 인터랙티브한 UI를 구현하는 실습입니다.
+
+### 2.1 공 던지기 애니메이션
+
+<img src="./screenshot/ch06_ball.jpg" width="200"/>
+
+#### 📝 설명
+
+농구공을 드래그하여 던지는 애니메이션을 구현합니다. 공을 터치하여 드래그하면 따라 움직이고, 놓으면 관성에 따라 날아가다가 1.5초 후 원래 위치로 돌아옵니다.
+
+#### 🎯 주요 학습 내용
+
+- `PanResponder` 기본 사용법
+- `Animated.ValueXY`로 2D 좌표 애니메이션
+- `Animated.event`를 활용한 제스처 추적
+- `Animated.decay`로 감속 효과 구현
+- `gestureState.vx`, `gestureState.vy`로 속도 기반 물리 효과
+
+#### 💻 핵심 코드
+
+```tsx
+// src/chapter6/PanResponderBall.tsx
+const panAnim = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: () => true,
+  
+  // 터치 중(드래그)일 때 공 이동
+  onPanResponderMove: Animated.event(
+    [
+      null,
+      {
+        dx: panAnim.x,
+        dy: panAnim.y,
+      },
+    ],
+    { useNativeDriver: false },
+  ),
+  
+  // 터치 종료(드래그 종료)일 때 공 이동 및 감속
+  onPanResponderEnd(e, gestureState) {
+    Animated.decay(panAnim, {
+      velocity: { x: gestureState.vx, y: gestureState.vy },
+      deceleration: 0.997, // 감속 비율 (1에 가까울수록 천천히 멈춤)
+      useNativeDriver: true,
+    }).start();
+  },
+  
+  // 1.5초 후 공이 제자리로 돌아오도록
+  onPanResponderRelease(e, gestureState) {
+    setTimeout(() => {
+      panAnim.setValue({ x: 0, y: 50 });
+      Animated.spring(panAnim, {
+        toValue: { x: 0, y: 0 },
+        useNativeDriver: true,
+      }).start();
+    }, 1500);
+  },
+});
+
+// 공 UI
+<Animated.View
+  {...panResponder.panHandlers}
+  style={{
+    position: 'absolute',
+    bottom: 20,
+    transform: [{ translateX: panAnim.x }, { translateY: panAnim.y }],
+  }}
+>
+  <Text style={{ fontSize: 100 }}>🏀</Text>
+</Animated.View>
+```
+
+---
+
+### 2.2 하단 모달 (Bottom Sheet)
+
+<img src="./screenshot/ch06_modal.jpg" width="200"/>
+
+#### 📝 설명
+
+하단에서 올라오는 모달(Bottom Sheet)을 구현합니다. 버튼을 누르면 모달이 나타나고, 배경을 터치하거나 모달을 아래로 드래그하면 사라집니다.
+
+#### 🎯 주요 학습 내용
+
+- 드래그 방향 감지 (`gestureState.dy`)
+- 조건부 제스처 처리 (일정 거리 이상 드래그 시)
+- 배경 투명도 애니메이션과 모달 위치 동시 제어
+- `useSafeAreaInsets`로 안전 영역 대응
+
+#### 💻 핵심 코드
+
+```tsx
+// src/chapter6/PanResponderModal.tsx
+const interpolateAnim = useRef(new Animated.Value(0)).current;
+const [show, setShow] = useState(false);
+
+const panResponder = PanResponder.create({
+  onStartShouldSetPanResponder: () => true,
+  onPanResponderMove: (event, gestureState) => {
+    // 아래로 100px 이상 드래그 시 모달 닫기
+    if (gestureState.dy > 100) {
+      hideMode();
+    }
+  },
+});
+
+const showMode = () => {
+  setShow(true);
+  Animated.timing(interpolateAnim, {
+    toValue: 1,
+    duration: 300,
+    useNativeDriver: false,
+  }).start();
+};
+
+const hideMode = () => {
+  Animated.timing(interpolateAnim, {
+    toValue: 0,
+    duration: 300,
+    useNativeDriver: false,
+  }).start(() => {
+    setShow(false); // 애니메이션 완료 후 unmount
+  });
+};
+
+// 배경 어둡게 처리
+{show && (
+  <Animated.View
+    style={{
+      position: 'absolute',
+      width: '100%',
+      height: '100%',
+      backgroundColor: '#00000090',
+      opacity: interpolateAnim, // 0 → 1
+    }}
+  />
+)}
+
+// 모달 컨텐츠
+<Animated.View
+  {...panResponder.panHandlers}
+  style={{
+    position: 'absolute',
+    bottom: interpolateAnim.interpolate({
+      inputRange: [0, 1],
+      outputRange: [-500, 0], // 화면 아래 → 화면 하단
+    }),
+    backgroundColor: 'white',
+    width: '100%',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+  }}
+>
+  {/* 모달 내용 */}
+</Animated.View>
+```
+
+---
+
+### 2.3 배너 슬라이더 (Banner Slider)
+
+<img src="./screenshot/ch06_banner_slider.jpg" width="200"/>
+
+#### 📝 설명
+
+좌우 스와이프로 넘어가는 배너 슬라이더를 구현합니다. 배너를 좌우로 드래그하거나 하단의 인디케이터를 클릭하여 페이지를 이동할 수 있습니다.
+
+#### 🎯 주요 학습 내용
+
+- 좌우 드래그 방향 감지 (`gestureState.dx`)
+- 임계값 기반 페이지 전환 (80px 이상 드래그)
+- 중복 실행 방지를 위한 `pending` 상태 관리
+- 화면 너비 기반 슬라이드 애니메이션
+
+#### 💻 핵심 코드
+
+```tsx
+// src/chapter6/PanResponderBannerSlider.tsx
+const [focus, setFocus] = useState(0);
+const bannerAnim = useRef(new Animated.Value(0)).current;
+const pendingRef = useRef(true); // 애니메이션 중복 실행 방지
+
+const { width } = Dimensions.get('window');
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: () => true,
+  onPanResponderMove: (event, gestureState) => {
+    const toRight = gestureState.dx < -80; // 왼쪽으로 80px 이상 드래그
+    const toLeft = gestureState.dx > 80;   // 오른쪽으로 80px 이상 드래그
+    
+    // 오른쪽 페이지로 이동
+    if (toRight && pendingRef.current && focus < 3) {
+      pendingRef.current = false;
+      setFocus(focus + 1);
+      Animated.timing(bannerAnim, {
+        toValue: -(focus + 1) * width, // 다음 페이지 위치
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => (pendingRef.current = true));
+    } 
+    // 왼쪽 페이지로 이동
+    else if (toLeft && pendingRef.current && focus > 0) {
+      setFocus(focus - 1);
+      Animated.timing(bannerAnim, {
+        toValue: -(focus - 1) * width, // 이전 페이지 위치
+        duration: 300,
+        useNativeDriver: true,
+      }).start(() => (pendingRef.current = true));
+    }
+  },
+});
+
+// 배너 슬라이더 UI
+<Animated.View
+  {...panResponder.panHandlers}
+  style={{
+    flexDirection: 'row',
+    transform: [{ translateX: bannerAnim }],
+  }}
+>
+  {repeat(4, index => (
+    <View key={index} style={{ width, height: width }}>
+      <Text>{index}</Text>
+    </View>
+  ))}
+</Animated.View>
+```
+
+---
+
+### 2.4 폰트 크기 슬라이더 (Font Size Slider)
+
+<img src="./screenshot/ch06_font_slider.jpg" width="200"/>
+
+#### 📝 설명
+
+드래그하여 폰트 크기를 조절하는 커스텀 슬라이더를 구현합니다. 슬라이더를 좌우로 드래그하거나 특정 위치를 클릭하여 폰트 크기를 변경할 수 있습니다.
+
+#### 🎯 주요 학습 내용
+
+- 드래그 중 실시간 위치 업데이트
+- 드래그 종료 시 가장 가까운 단계로 스냅
+- `Math.round`로 단계 계산
+- 클릭과 드래그 동시 지원
+
+#### 💻 핵심 코드
+
+```tsx
+// src/chapter6/PanResponderFontSlider.tsx
+const BOX_SIZE = 50;
+const CIRCLE_SIZE = 10;
+const FONT = [
+  { title: { fontSize: 20 }, body: { fontSize: 12 } },
+  { title: { fontSize: 24 }, body: { fontSize: 14 } },
+  { title: { fontSize: 30 }, body: { fontSize: 15 } },
+  { title: { fontSize: 35 }, body: { fontSize: 19 } },
+];
+
+const circleAnim = useRef(new Animated.Value(0)).current;
+const [step, setStep] = useState(0);
+
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: () => true,
+  onStartShouldSetPanResponder: () => true,
+  
+  // 드래그 시작: 현재 위치 저장
+  onPanResponderStart: (event, gestureState) => {
+    circleAnim.setValue(step * BOX_SIZE);
+  },
+  
+  // 드래그 중: 실시간 위치 업데이트
+  onPanResponderMove: (event, gestureState) => {
+    circleAnim.setValue(gestureState.dx + step * BOX_SIZE);
+  },
+  
+  // 드래그 종료: 가장 가까운 단계로 스냅
+  onPanResponderEnd: (event, gestureState) => {
+    const fontStep = step + Math.round(gestureState.dx / 50);
+    const toValue = fontStep * BOX_SIZE;
+    setStep(fontStep);
+    
+    Animated.spring(circleAnim, {
+      toValue,
+      friction: 7,
+      tension: 50,
+      useNativeDriver: true,
+    }).start();
+  },
+});
+
+// 슬라이더 UI
+<Animated.View
+  {...panResponder.panHandlers}
+  style={{
+    width: 10,
+    height: 10,
+    backgroundColor: '#333',
+    borderRadius: 100,
+    transform: [{ translateX: circleAnim }],
+  }}
+/>
+
+// 폰트 적용
+<Text style={FONT[step].title}>Font Step {step + 1}</Text>
+<Text style={FONT[step].body}>font body style</Text>
+```
+
+---
+
+## 🎓 PanResponder 학습 요약
+
+### PanResponder 주요 이벤트
+
+| 이벤트 | 설명 | 반환 값 |
+| --- | --- | --- |
+| `onStartShouldSetPanResponder` | 터치 시작 시 PanResponder를 활성화할지 결정 | boolean |
+| `onMoveShouldSetPanResponder` | 터치 이동 시 PanResponder를 활성화할지 결정 | boolean |
+| `onPanResponderStart` | 제스처가 시작될 때 호출 | void |
+| `onPanResponderMove` | 터치가 이동할 때마다 호출 | void |
+| `onPanResponderEnd` | 터치가 종료될 때 호출 (손가락을 뗌) | void |
+| `onPanResponderRelease` | 제스처가 성공적으로 완료될 때 호출 | void |
+
+---
+
 ## 📖 참고 자료
 
 - [React Native Animated API 공식 문서](https://reactnative.dev/docs/animated)
+- [React Native PanResponder 공식 문서](https://reactnative.dev/docs/panresponder)
 - [React Native Easing 함수](https://reactnative.dev/docs/easing)
 - [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
