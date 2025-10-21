@@ -34,14 +34,12 @@ const PanResponderFontSlider = () => {
     onMoveShouldSetPanResponder: (event, gestureState) => true,
     onStartShouldSetPanResponder: (event, gestureState) => true,
     onPanResponderStart: (event, gestureState) => {
-      console.log('onPanResponderStart', event, gestureState);
+      circleAnim.setValue(step * BOX_SIZE);
     },
     onPanResponderMove: (event, gestureState) => {
-      console.log('onPanResponderMove', event, gestureState);
       circleAnim.setValue(gestureState.dx + step * BOX_SIZE);
     },
     onPanResponderEnd: (event, gestureState) => {
-      console.log('onPanResponderEnd', event, gestureState);
       const fontStep = step + Math.round(gestureState.dx / 50);
       const toValue = fontStep * BOX_SIZE;
       setStep(fontStep);
