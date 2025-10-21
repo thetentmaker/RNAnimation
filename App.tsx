@@ -10,11 +10,12 @@ import PanResponderFontSlider from './src/chapter6/PanResponderFontSlider';
 import PanResponderBall from './src/chapter6/PanResponderBall';
 import PanResponderModal from './src/chapter6/PanResponderModal';
 import PanResponderBannerSlider from './src/chapter6/PanResponderBannerSlider';
+import ViewLayoutEvent from './src/chapter7/ViewLayoutEvent';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <PanResponderBall />
+      <ViewLayoutEvent />
     </SafeAreaProvider>
   );
 }
