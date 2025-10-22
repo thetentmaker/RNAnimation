@@ -4,7 +4,7 @@ import {
   useWindowDimensions,
   View,
 } from 'react-native';
-import { BOTTOM_HEIGHT } from '../utils';
+import { BOTTOM_HEIGHT } from '../../utils';
 import Icon from '@react-native-vector-icons/material-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 

@@ -1,9 +1,12 @@
 import { ScrollView, Text, View } from 'react-native';
-import HeaderBackground from './components/HeaderBackground';
-import CategoryHeader from './components/CategoryHeader';
-import LogoHeader from './components/LogoHeader';
-import Bottom from './components/Bottom';
 import { useState } from 'react';
+import HeaderBackground from './components/header/HeaderBackground';
+import CategoryHeader from './components/header/CategoryHeader';
+import LogoHeader from './components/header/LogoHeader';
+import Bottom from './components/bottom/Bottom';
+import MusicListMedium from './components/musiclist/MusicListMedium';
+import MusicListLarge from './components/musiclist/MusicListLarge';
+import MusicListSmall from './components/musiclist/MusicListSmall';
 
 const YoutubeMusic = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
@@ -19,7 +22,9 @@ const YoutubeMusic = () => {
       />
       <ScrollView style={{ flex: 1, borderWidth: 1 }}>
         <View style={{ height: 1000 }}>
-          <Text>music list</Text>
+          <MusicListSmall />
+          <MusicListMedium />
+          <MusicListLarge />
         </View>
       </ScrollView>
       <Bottom />
