@@ -6,12 +6,12 @@
  */
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import FlatListCheckRenderItems from './src/chapter8/FlatListCheckRenderItems';
+import YoutubeMusic from './src/youtubeMusic/YoutubeMusic';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <FlatListCheckRenderItems />
+      <YoutubeMusic />
     </SafeAreaProvider>
   );
 }
