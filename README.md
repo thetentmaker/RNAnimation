@@ -10,9 +10,7 @@ React Native에서 제공하는 다양한 애니메이션 기법을 학습하고
 
 1. [Animated 심화 실습](#1-animated-심화-실습)
 2. [PanResponder를 활용한 제스처 인식](#2-panresponder를-활용한-제스처-인식)
-3. LayoutEvent로 상호작용 감지하기 (예정)
-6. FlatList 스크롤 데이터 감지 (예정)
-7. 유튜브 뮤직 클론 코딩 (예정)
+3. 유튜브 뮤직 클론 코딩 (예정)
 
 ---
 
@@ -443,7 +441,6 @@ rotate: animValue.interpolate({
 1. 가능한 경우 항상 `useNativeDriver: true` 사용
 2. 레이아웃 속성(width, height) 대신 `transform` 사용
 3. 많은 수의 애니메이션은 `useNativeDriver`로 최적화 필수
-4. `requestAnimationFrame` 대신 Animated API 사용
 
 ---
 
@@ -780,3 +777,7 @@ const panResponder = PanResponder.create({
 - [React Native PanResponder 공식 문서](https://reactnative.dev/docs/panresponder)
 - [React Native Easing 함수](https://reactnative.dev/docs/easing)
 - [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
+
+
+
+# Continue...

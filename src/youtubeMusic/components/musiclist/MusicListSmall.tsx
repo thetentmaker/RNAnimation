@@ -8,7 +8,11 @@ const MusicListSmall = () => {
   return (
     <View>
       <Title />
-      <ScrollView horizontal contentContainerStyle={{ paddingHorizontal: 10 }}>
+      <ScrollView
+        horizontal
+        contentContainerStyle={{ paddingHorizontal: 10 }}
+        showsHorizontalScrollIndicator={false}
+      >
         {repeat(3, index => (
           <View key={index} style={{ width: width * 0.9 }}>
             {repeat(4, index => (
