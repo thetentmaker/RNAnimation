@@ -20,7 +20,7 @@ const YoutubeMusic = () => {
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
       />
-      <ScrollView style={{ flex: 1, borderWidth: 1 }}>
+      <ScrollView style={{ flex: 1 }}>
         <View style={{ marginBottom: 100 }}>
           <MusicListSmall />
           <MusicListMedium />
