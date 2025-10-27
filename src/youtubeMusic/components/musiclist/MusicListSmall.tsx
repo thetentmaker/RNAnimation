@@ -1,20 +1,81 @@
-import { Dimensions, Image, ScrollView, Text, View } from 'react-native';
+import {
+  Dimensions,
+  Image,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native';
 import Icon from '@react-native-vector-icons/material-icons';
 import repeat from '../../../utils/Loop';
 import { fa, faker } from '@faker-js/faker';
+import { useRef } from 'react';
 const { width } = Dimensions.get('window');
 
 const MusicListSmall = () => {
+  const scrollStartRef = useRef(0);
+  const scrollRef = useRef<ScrollView>(null);
+  const pageRef = useRef(1);
   return (
     <View>
       <Title />
       <ScrollView
+        ref={scrollRef}
         horizontal
         contentContainerStyle={{ paddingHorizontal: 10 }}
         showsHorizontalScrollIndicator={false}
+        scrollEventThrottle={1}
+        onScrollBeginDrag={e => {
+          const x = e.nativeEvent.contentOffset.x;
+          scrollStartRef.current = x;
+        }}
+        onScrollEndDrag={e => {
+          const x = e.nativeEvent.contentOffset.x;
+          const dx = x - scrollStartRef.current;
+          console.log('dx: ', dx);
+          // 오른쪽 page로 붙는 애니메이션
+          if (width / 4 < dx && pageRef.current !== 3) {
+            console.log('다음 페이지로 넘어가게');
+            scrollRef.current?.scrollTo({
+              x: width * 0.92 * pageRef.current,
+              y: 0,
+              animated: true,
+            });
+            pageRef.current = pageRef.current + 1;
+          }
+          if (0 < dx && dx < width / 4) {
+            console.log('머물기');
+            scrollRef.current?.scrollTo({
+              x: width * 0.92 * (pageRef.current - 1),
+              y: 0,
+              animated: true,
+            });
+          }
+
+
+          // 왼쪽 page로 붙는 애니메이션
+          if (dx < -width / 4 && pageRef.current !== 1) {
+            console.log('왼쪽 페이지로 넘어가기');
+            scrollRef.current?.scrollTo({
+              x: width * 0.92 * (pageRef.current - 2),
+              y: 0,
+              animated: true,
+            });
+            pageRef.current = pageRef.current - 1;
+          }
+          if (-width / 4 < dx && dx < 0) {
+            scrollRef.current?.scrollTo({
+              x: width * 0.92 * (pageRef.current - 1),
+              y: 0,
+              animated: true,
+            });
+          }
+
+        }}
       >
         {repeat(3, index => (
-          <View key={index} style={{ width: width * 0.9 }}>
+          <View key={index} style={{ width: width * 0.92 }}>
             {repeat(4, index => (
               <MusicListSmallItem key={index} />
             ))}

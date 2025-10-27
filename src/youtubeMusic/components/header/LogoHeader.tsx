@@ -14,7 +14,7 @@ interface LogoHeaderProps {
   headerAnim: Animated.Value;
 }
 const LogoHeader = ({ headerAnim }: LogoHeaderProps) => {
-  const headerAnimRef = useRef(new Animated.Value(0)).current;
+  // const headerAnimRef = useRef(new Animated.Value(0)).current;
   return (
     <SafeAreaView>
       <Animated.View

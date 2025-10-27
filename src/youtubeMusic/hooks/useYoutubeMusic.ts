@@ -19,17 +19,17 @@ const useYoutubeMusic = () => {
     const y = e.nativeEvent.contentOffset.y;
     const dy = y - scrollStartRef.current;
     console.log('dy', dy);
-    //위로 올라가는 헤더
+    // //위로 올라가는 헤더
     if (0 < dy && dy < 40 && showHeaderRef.current) {
       headerAnim.setValue(dy);
     }
-    //아래로 내려가는 헤더
+    // // //아래로 내려가는 헤더
     if (-40 < dy && dy < 0 && !showHeaderRef.current) {
       headerAnim.setValue(40 + dy);
     }
-
+    // headerAnim.setValue(dy);
     //헤더 배경 애니메이션
-    headerBgAnim.setValue(y);
+    headerBgAnim.setValue(dy);
   };
   const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;

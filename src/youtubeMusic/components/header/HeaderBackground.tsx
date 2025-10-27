@@ -19,7 +19,7 @@ const HeaderBackground = ({
         },
         {
           top: headerBgAnim.interpolate({
-            inputRange: [-1, 0, 100],
+            inputRange: [0, 100, 200],
             outputRange: [0, 0, -100],
           }),
           opacity: headerBgAnim.interpolate({
