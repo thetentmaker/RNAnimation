@@ -25,6 +25,7 @@ const YoutubeMusic = () => {
       <CategoryHeader
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        headerAnim={headerAnim}
       />
       <ScrollView
         style={styles.scrollView}

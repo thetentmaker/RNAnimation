@@ -1,12 +1,20 @@
-import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface CategoryHeaderProps {
   selectedCategory: number | undefined;
   setSelectedCategory: (category: number | undefined) => void;
+  headerAnim: Animated.Value;
 }
 const CategoryHeader = ({
   selectedCategory,
   setSelectedCategory,
+  headerAnim,
 }: CategoryHeaderProps) => {
   // 휴식, 에너지 충전, 집중, 운동, 출퇴근/등하교 로 배열 만들어줘 변수명은 category
   const category = ['휴식', '에너지 충전', '집중', '운동', '출퇴근/등하교'];
@@ -23,10 +31,19 @@ const CategoryHeader = ({
   };
   return (
     <View style={{}}>
-      <ScrollView
+      <Animated.ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
-        style={{ flexDirection: 'row', paddingVertical: 20 }}
+        style={{
+          flexDirection: 'row',
+          paddingVertical: 20,
+          paddingBottom: 5,
+          borderBottomWidth: headerAnim.interpolate({
+            inputRange: [0, 40],
+            outputRange: [0, 1],
+          }),
+          borderBottomColor: "#555",
+        }}
         contentContainerStyle={{ paddingHorizontal: 10 }}
       >
         {category.map((item, index) => (
@@ -46,7 +63,7 @@ const CategoryHeader = ({
             </View>
           </TouchableOpacity>
         ))}
-      </ScrollView>
+      </Animated.ScrollView>
     </View>
   );
 };
