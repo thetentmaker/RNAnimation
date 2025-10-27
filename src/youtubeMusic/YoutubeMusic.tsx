@@ -13,14 +13,22 @@ const YoutubeMusic = () => {
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
     undefined,
   );
-  const { onScrollBeginDrag, onScrollEndDrag, onScroll, headerAnim } =
-    useYoutubeMusic();
+  const {
+    onScrollBeginDrag,
+    onScrollEndDrag,
+    onScroll,
+    headerAnim,
+    headerBgAnim,
+  } = useYoutubeMusic();
   const renderCount = useRef(0);
   ++renderCount.current;
   console.log('renderCount', renderCount.current);
   return (
     <View style={styles.container}>
-      <HeaderBackground selectedCategory={selectedCategory} />
+      <HeaderBackground
+        selectedCategory={selectedCategory}
+        headerBgAnim={headerBgAnim}
+      />
       <LogoHeader headerAnim={headerAnim} />
       <CategoryHeader
         selectedCategory={selectedCategory}

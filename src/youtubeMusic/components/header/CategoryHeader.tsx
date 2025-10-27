@@ -42,7 +42,7 @@ const CategoryHeader = ({
             inputRange: [0, 40],
             outputRange: [0, 1],
           }),
-          borderBottomColor: "#555",
+          borderBottomColor: '#555',
         }}
         contentContainerStyle={{ paddingHorizontal: 10 }}
       >

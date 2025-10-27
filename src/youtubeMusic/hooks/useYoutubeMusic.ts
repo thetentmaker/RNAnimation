@@ -9,6 +9,8 @@ const useYoutubeMusic = () => {
   const scrollStartRef = useRef<number>(0);
   const headerAnim = useRef(new Animated.Value(0)).current;
   const showHeaderRef = useRef(true);
+  const headerBgAnim = useRef(new Animated.Value(0)).current;
+
   const onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;
     scrollStartRef.current = y;
@@ -25,6 +27,9 @@ const useYoutubeMusic = () => {
     if (-40 < dy && dy < 0 && !showHeaderRef.current) {
       headerAnim.setValue(40 + dy);
     }
+
+    //헤더 배경 애니메이션
+    headerBgAnim.setValue(y);
   };
   const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;
@@ -39,11 +44,11 @@ const useYoutubeMusic = () => {
       showHeaderRef.current = false;
     }
     if (dy < 0 && !showHeaderRef.current) {
-        Animated.spring(headerAnim, {
-            toValue: 0,
-            useNativeDriver: false,
-          }).start();
-    
+      Animated.spring(headerAnim, {
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+
       showHeaderRef.current = true;
     }
   };
@@ -53,6 +58,7 @@ const useYoutubeMusic = () => {
     onScrollBeginDrag,
     onScrollEndDrag,
     onScroll,
+    headerBgAnim,
   };
 };
 
