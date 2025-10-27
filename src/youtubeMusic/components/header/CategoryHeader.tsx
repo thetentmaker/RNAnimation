@@ -40,7 +40,7 @@ const CategoryHeader = ({
           paddingBottom: 5,
           borderBottomWidth: headerAnim.interpolate({
             inputRange: [0, 40],
-            outputRange: [0, 1],
+            outputRange: [0, 0.5],
           }),
           borderBottomColor: '#555',
         }}

@@ -1,8 +1,6 @@
 import {
   Dimensions,
   Image,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
   ScrollView,
   Text,
   View,
