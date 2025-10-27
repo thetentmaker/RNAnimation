@@ -1,31 +1,63 @@
-import { Image, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Animated,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from '@react-native-vector-icons/material-icons';
-const LogoHeader = () => {
+import { useEffect, useRef } from 'react';
+
+interface LogoHeaderProps {
+  headerAnim: Animated.Value;
+}
+const LogoHeader = ({ headerAnim }: LogoHeaderProps) => {
+  const headerAnimRef = useRef(new Animated.Value(0)).current;
   return (
     <SafeAreaView>
-      <View
+      <Animated.View
         style={{
-          marginHorizontal: 14,
-          marginRight: 10,
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
+          marginTop: headerAnim.interpolate({
+            inputRange: [-40, 0, 40],
+            outputRange: [0, 0, -45],
+          }),
+          opacity: headerAnim.interpolate({
+            inputRange: [-40, 0, 20],
+            outputRange: [1, 1, 0],
+          }),
         }}
       >
-        <Image
-          source={require('../../../assets/logo.png')}
-          style={{ width: 90, height: 30 }}
-        />
-        <View style={{ flexDirection: 'row' }}>
-          <IconItem name={'cast'} />
-          <IconItem name={'search'} />
-          <IdentityIcon />
+        <View
+          style={[
+            {
+              marginHorizontal: 14,
+              marginRight: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            },
+          ]}
+        >
+          <Image
+            source={require('../../../assets/logo.png')}
+            style={{ width: 90, height: 30 }}
+          />
+          <View style={{ flexDirection: 'row' }}>
+            <IconItem name={'cast'} />
+            <IconItem name={'search'} />
+            <IdentityIcon />
+          </View>
         </View>
-      </View>
+      </Animated.View>
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  header: {},
+});
 
 export default LogoHeader;
 

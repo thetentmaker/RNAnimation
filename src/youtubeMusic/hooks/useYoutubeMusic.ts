@@ -1,0 +1,59 @@
+import { useRef, useState } from 'react';
+import {
+  Animated,
+  NativeScrollEvent,
+  NativeSyntheticEvent,
+} from 'react-native';
+
+const useYoutubeMusic = () => {
+  const scrollStartRef = useRef<number>(0);
+  const headerAnim = useRef(new Animated.Value(0)).current;
+  const showHeaderRef = useRef(true);
+  const onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    scrollStartRef.current = y;
+  };
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    const dy = y - scrollStartRef.current;
+    console.log('dy', dy);
+    //위로 올라가는 헤더
+    if (0 < dy && dy < 40 && showHeaderRef.current) {
+      headerAnim.setValue(dy);
+    }
+    //아래로 내려가는 헤더
+    if (-40 < dy && dy < 0 && !showHeaderRef.current) {
+      headerAnim.setValue(40 + dy);
+    }
+  };
+  const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    const dy = y - scrollStartRef.current;
+
+    if (0 < dy && showHeaderRef.current) {
+      Animated.spring(headerAnim, {
+        toValue: 40,
+        useNativeDriver: false,
+      }).start();
+
+      showHeaderRef.current = false;
+    }
+    if (dy < 0 && !showHeaderRef.current) {
+        Animated.spring(headerAnim, {
+            toValue: 0,
+            useNativeDriver: false,
+          }).start();
+    
+      showHeaderRef.current = true;
+    }
+  };
+
+  return {
+    headerAnim,
+    onScrollBeginDrag,
+    onScrollEndDrag,
+    onScroll,
+  };
+};
+
+export default useYoutubeMusic;
