@@ -10,6 +10,7 @@ import {
 import PlaylistMini from './PlaylistMini';
 import { useRef } from 'react';
 import PlaylistFullTop from './playlistFull/PlaylistFullTop';
+import PlaylistFullBottom from './playlistFull/PlaylistFullBottom';
 
 interface PlaylistProps {
   playlistAnim: Animated.Value;
@@ -149,25 +150,7 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
         >
           <PlaylistMini />
         </Animated.View>
-        <Animated.View
-          style={{
-            position: 'absolute',
-            width,
-            height: playlistAnim.interpolate({
-              inputRange: [height / 2, height],
-              outputRange: [0, 100],
-            }),
-            borderWidth: 1,
-            borderColor: 'white',
-            bottom: 0,
-            opacity: playlistAnim.interpolate({
-              inputRange: [height / 2, height],
-              outputRange: [0, 1],
-            }),
-          }}
-        >
-          <Text style={{ color: 'white' }}>Bottom</Text>
-        </Animated.View>
+        <PlaylistFullBottom playlistAnim={playlistAnim} />
       </Animated.View>
     </>
   );
