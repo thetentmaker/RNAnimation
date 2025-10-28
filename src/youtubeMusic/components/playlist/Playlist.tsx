@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import PlaylistMini from './PlaylistMini';
 import { useRef } from 'react';
+import PlaylistFullTop from './playlistFull/PlaylistFullTop';
 
 interface PlaylistProps {
   playlistAnim: Animated.Value;
@@ -91,30 +92,8 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
         }}
       >
         <View>
-          {/* top */}
-          <Animated.View
-            style={{
-              height: playlistAnim.interpolate({
-                inputRange: [height / 2, height],
-                outputRange: [0, 100],
-              }),
-              opacity: playlistAnim.interpolate({
-                inputRange: [height / 2, height],
-                outputRange: [0, 1],
-              }),
-            }}
-          >
-            <Text
-              style={{
-                color: 'white',
-                height: '100%',
-                borderWidth: 1,
-                borderColor: 'white',
-              }}
-            >
-              Top
-            </Text>
-          </Animated.View>
+          {/* TOP */}
+          <PlaylistFullTop playlistAnim={playlistAnim} />
           {/* image: thumbnail */}
           <Animated.View
             style={{
@@ -129,7 +108,7 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
             }}
           >
             <Image
-              source={{ uri: 'https://picsum.photos/50' }}
+              source={{ uri: 'https://picsum.photos/300' }}
               style={styles.image}
             />
           </Animated.View>
@@ -137,8 +116,8 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
           <Animated.View
             style={{
               height: playlistAnim.interpolate({
-                inputRange: [height / 2, height],
-                outputRange: [0, 250],
+                inputRange: [0, height / 2, height],
+                outputRange: [0, 0, 250],
               }),
               opacity: playlistAnim.interpolate({
                 inputRange: [height / 2, height],
@@ -157,7 +136,6 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
             </Text>
           </Animated.View>
         </View>
-        {/* <PlaylistFull /> */}
         <Animated.View
           style={[
             {
