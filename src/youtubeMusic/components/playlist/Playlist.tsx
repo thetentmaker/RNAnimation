@@ -11,6 +11,7 @@ import PlaylistMini from './PlaylistMini';
 import { useRef } from 'react';
 import PlaylistFullTop from './playlistFull/PlaylistFullTop';
 import PlaylistFullBottom from './playlistFull/PlaylistFullBottom';
+import PlaylistFullMid from './playlistFull/PlaylistFullMid';
 
 interface PlaylistProps {
   playlistAnim: Animated.Value;
@@ -114,28 +115,7 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
             />
           </Animated.View>
           {/* middle */}
-          <Animated.View
-            style={{
-              height: playlistAnim.interpolate({
-                inputRange: [0, height / 2, height],
-                outputRange: [0, 0, 250],
-              }),
-              opacity: playlistAnim.interpolate({
-                inputRange: [height / 2, height],
-                outputRange: [0, 1],
-              }),
-            }}
-          >
-            <Text
-              style={{
-                color: 'white',
-                height: '100%',
-                borderColor: 'white',
-              }}
-            >
-              Middle
-            </Text>
-          </Animated.View>
+          <PlaylistFullMid playlistAnim={playlistAnim} />
         </View>
         <Animated.View
           style={[
