@@ -1,7 +1,6 @@
 import {
   Text,
   TouchableOpacity,
-  useWindowDimensions,
   View,
 } from 'react-native';
 import { BOTTOM_HEIGHT } from '../../utils';
