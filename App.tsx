@@ -7,11 +7,12 @@
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import YoutubeMusic from './src/youtubeMusic/YoutubeMusic';
+import MobilePay from './src/mobilePay/MobilePay';
 
 function App() {
   return (
     <SafeAreaProvider>
-      <YoutubeMusic />
+      <MobilePay />
     </SafeAreaProvider>
   );
 }
