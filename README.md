@@ -10,7 +10,7 @@ React Native에서 제공하는 다양한 애니메이션 기법을 학습하고
 
 1. [Animated 심화 실습](#1-animated-심화-실습)
 2. [PanResponder를 활용한 제스처 인식](#2-panresponder를-활용한-제스처-인식)
-3. 유튜브 뮤직 클론 코딩 (예정)
+3. [유튜브 뮤직 클론](#3-유튜브-뮤직-클론)
 
 ---
 
@@ -778,6 +778,349 @@ const panResponder = PanResponder.create({
 - [React Native Easing 함수](https://reactnative.dev/docs/easing)
 - [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
 
+---
+
+## 3. 유튜브 뮤직 클론
+
+`Animated` API와 `PanResponder`를 결합하여 실제 앱과 유사한 복잡한 인터랙션을 구현하는 프로젝트입니다.
+
+| 메인 화면 | 스크롤 화면 | 플레이 화면 |
+|:---:|:---:|:---:|
+| <img src="./screenshot/ch09_youtube_music_01.jpg" width="200"/> | <img src="./screenshot/ch09_youtube_music_02.jpg" width="200"/> | <img src="./screenshot/ch09_youtube_music_03.jpg" width="200"/> |
+
+### 🔧 사용된 데이터 소스
+
+이 프로젝트는 다음의 외부 라이브러리와 서비스를 활용하여 테스트 데이터를 생성합니다:
+
+- **[@faker-js/faker](https://github.com/faker-js/faker)**: `faker.music.songName()` 메서드를 사용하여 랜덤한 음악 제목 생성
+- **[Picsum Photos](https://picsum.photos/)**: `https://picsum.photos/300`을 통해 랜덤 이미지(앨범 커버) 제공
 
 
-# Continue...
+
+### 📝 설명
+
+유튜브 뮤직 앱의 핵심 애니메이션 기능을 클론 코딩합니다. 스크롤에 반응하는 헤더, 드래그로 펼쳐지는 플레이어 등 실제 앱 수준의 복잡한 애니메이션을 구현합니다. 그 외 기능에 대한 구현은 없습니다.
+
+### 🎯 주요 구현 기능
+
+1. **스크롤 기반 헤더 애니메이션**
+   - 아래로 스크롤 시 헤더가 위로 숨겨짐
+   - 위로 스크롤 시 헤더가 다시 나타남
+   - 스크롤 위치에 따라 헤더 배경 투명도 변경
+
+2. **드래그 가능한 음악 플레이어**
+   - Mini Player에서 Full Player로 드래그하여 확장
+   - Full Player에서 아래로 드래그하여 축소
+   - 드래그 진행도에 따라 UI 요소들이 유기적으로 변화
+
+3. **반응형 하단 네비게이션**
+   - 플레이어 확장 시 하단 네비게이션이 자연스럽게 숨겨짐
+   - 플레이어 축소 시 다시 나타남
+
+### 💻 핵심 코드
+
+#### 1. 스크롤 기반 헤더 애니메이션
+
+<img src="./screenshot/ch09_youtube_music_01.jpg" width="200"/>
+
+```tsx
+// src/youtubeMusic/hooks/useYoutubeMusic.ts
+const useYoutubeMusic = () => {
+  const scrollStartRef = useRef(0);
+  const headerAnim = useRef(new Animated.Value(0)).current;
+  const showHeaderRef = useRef(true);
+
+  const onScrollBeginDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    scrollStartRef.current = y;
+  };
+
+  const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    // dy: 스크롤 시작 위치로부터 현재까지 이동한 거리
+    const dy = y - scrollStartRef.current;
+
+    // dy > 0: 아래로 스크롤 (헤더를 숨겨야 함)
+    // dy < 0: 위로 스크롤 (헤더를 보여야 함)
+
+    // 위로 올라가는 헤더 (스크롤 다운)
+    if (0 < dy && showHeaderRef.current) {
+      headerAnim.setValue(dy);
+    }
+    // 아래로 내려가는 헤더 (스크롤 업)
+    // -40: 너무 작은 움직임에는 반응하지 않도록 최소 임계값 설정
+    //      사용자가 의도적으로 위로 스크롤할 때만 헤더가 나타나도록 함
+    if (-40 < dy && dy < 0 && !showHeaderRef.current) {
+      headerAnim.setValue(100 + dy);
+    }
+  };
+
+  const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const y = e.nativeEvent.contentOffset.y;
+    const dy = y - scrollStartRef.current;
+
+    // 위로 스크롤: 헤더 숨기기
+    if (0 < dy && showHeaderRef.current) {
+      Animated.spring(headerAnim, {
+        toValue: 100,
+        useNativeDriver: false,
+      }).start();
+      showHeaderRef.current = false;
+    }
+    // 아래로 스크롤: 헤더 보이기
+    if (dy < 0 && !showHeaderRef.current) {
+      Animated.spring(headerAnim, {
+        toValue: 0,
+        useNativeDriver: false,
+      }).start();
+      showHeaderRef.current = true;
+    }
+  };
+
+  return { onScrollBeginDrag, onScroll, onScrollEndDrag, headerAnim };
+};
+```
+
+```tsx
+// src/youtubeMusic/components/header/LogoHeader.tsx
+const LogoHeader = ({ headerAnim }: LogoHeaderProps) => {
+  return (
+    <Animated.View
+      style={{
+        marginTop: headerAnim.interpolate({
+          // inputRange: [-40, 0, 100]
+          // -40: 위로 스크롤 시 반응 시작 지점 (dy의 최소 임계값과 일치)
+          // 0: 헤더가 완전히 보이는 기본 상태
+          // 100: 헤더가 완전히 숨겨지는 상태 (onScrollEndDrag의 toValue와 일치)
+          inputRange: [-40, 0, 100],
+          // outputRange: [0, 0, -45]
+          // -40~0 범위에서는 marginTop이 0으로 유지 (위로 스크롤 시 헤더 고정)
+          // 0~100 범위에서는 0에서 -45로 변화 (아래로 스크롤 시 헤더가 위로 올라가며 숨김)
+          outputRange: [0, 0, -45],
+        }),
+        opacity: headerAnim.interpolate({
+          inputRange: [-40, 0, 20],
+          outputRange: [1, 1, 0], // 0~20 범위에서 빠르게 투명해짐 (위치 변화와 함께 페이드아웃)
+        }),
+      }}
+    >
+      {/* 로고 및 아이콘들 */}
+    </Animated.View>
+  );
+};
+```
+
+#### 2. 드래그 가능한 음악 플레이어
+
+<img src="./screenshot/ch09_youtube_music_03.jpg" width="200"/>
+
+```tsx
+// src/youtubeMusic/components/playlist/Playlist.tsx
+const Playlist = ({ playlistAnim }: PlaylistProps) => {
+  const { width, height } = useWindowDimensions();
+  const playlistRef = useRef('mini'); // 현재 상태: 'mini' 또는 'full'
+
+  const panResponder = useRef(
+    PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      onPanResponderMove: (evt, gestureState) => {
+        const { dy } = gestureState;
+        // Mini 상태에서 위로 드래그
+        if (playlistRef.current === 'mini') {
+          playlistAnim.setValue(-dy); // dy는 음수
+        }
+        // Full 상태에서 아래로 드래그
+        else if (playlistRef.current === 'full') {
+          playlistAnim.setValue(height - dy);
+        }
+      },
+      onPanResponderEnd: (evt, gestureState) => {
+        const { dy } = gestureState;
+
+        // Mini → Full: 100px 이상 위로 드래그
+        // -100: 사용자가 충분히 위로 드래그했을 때만 Full 모드로 전환
+        //       너무 민감하면 실수로 전환될 수 있고, 너무 둔감하면 사용성이 떨어짐
+        //       100px은 사용자 의도를 명확히 파악할 수 있는 적절한 임계값
+        if (dy < -100 && playlistRef.current === 'mini') {
+          Animated.spring(playlistAnim, {
+            toValue: height,
+            useNativeDriver: false,
+          }).start();
+          playlistRef.current = 'full';
+        }
+        // Mini 유지: 100px 미만 드래그 (짧은 드래그는 원래 위치로 복귀)
+        else if (-100 < dy && playlistRef.current === 'mini') {
+          Animated.spring(playlistAnim, {
+            toValue: 0,
+            useNativeDriver: false,
+          }).start();
+        }
+
+        // Full → Mini: 100px 이상 아래로 드래그
+        // 100: Mini로 전환하기 위한 충분한 드래그 거리
+        //      위로 확장할 때와 동일한 임계값을 사용해 일관된 UX 제공
+        if (dy > 100 && playlistRef.current === 'full') {
+          Animated.spring(playlistAnim, {
+            toValue: 0,
+            useNativeDriver: false,
+          }).start();
+          playlistRef.current = 'mini';
+        }
+        // Full 유지: 100px 미만 드래그 (짧은 드래그는 원래 위치로 복귀)
+        else if (dy < 100 && playlistRef.current === 'full') {
+          Animated.spring(playlistAnim, {
+            toValue: height,
+            useNativeDriver: false,
+          }).start();
+        }
+      },
+    }),
+  ).current;
+
+  return (
+    <Animated.View
+      {...panResponder.panHandlers}
+      style={{
+        // 플레이어 위치 조정
+        marginTop: playlistAnim.interpolate({
+          inputRange: [0, height / 2, height],
+          outputRange: [0, -200, -200],
+        }),
+        // 플레이어 높이 변화
+        height: playlistAnim.interpolate({
+          inputRange: [0, 100],
+          outputRange: [60, 160],
+        }),
+        // 좌우 패딩 조정
+        paddingLeft: playlistAnim.interpolate({
+          inputRange: [0, height / 2, height],
+          outputRange: [10, width * 0.1, width * 0.1],
+        }),
+      }}
+    >
+      {/* 썸네일 크기 변화 */}
+      <Animated.View
+        style={{
+          width: playlistAnim.interpolate({
+            inputRange: [0, height / 2, height],
+            outputRange: [50, width * 0.8, width * 0.8], // Mini → Full
+          }),
+          height: playlistAnim.interpolate({
+            inputRange: [0, height / 2, height],
+            outputRange: [50, width * 0.8, width * 0.8],
+          }),
+        }}
+      >
+        <Image source={{ uri: 'https://picsum.photos/300' }} />
+      </Animated.View>
+
+      {/* Mini 플레이어 정보 (Full 모드에서 숨김) */}
+      <Animated.View
+        style={{
+          opacity: playlistAnim.interpolate({
+            inputRange: [0, height / 2],
+            outputRange: [1, 0], // 점진적으로 사라짐
+          }),
+        }}
+      >
+        <PlaylistMini />
+      </Animated.View>
+    </Animated.View>
+  );
+};
+```
+
+#### 3. 반응형 하단 네비게이션
+
+```tsx
+// src/youtubeMusic/components/bottom/Bottom.tsx
+const Bottom = ({ playlistAnim }: BottomProps) => {
+  const { bottom } = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
+
+  return (
+    <Animated.View
+      style={{
+        // 플레이어 확장 시 하단 네비게이션 숨김
+        marginBottom: playlistAnim.interpolate({
+          inputRange: [0, height / 2, height],
+          outputRange: [0, -BOTTOM_HEIGHT - bottom, -BOTTOM_HEIGHT - bottom],
+        }),
+      }}
+    >
+      <View style={{ paddingBottom: bottom, backgroundColor: '#222' }}>
+        <BottomItem name={'home-filled'} title={'홈'} />
+        <BottomItem name={'explore'} title={'둘러보기'} />
+        <BottomItem name={'library-music'} title={'보관함'} />
+      </View>
+    </Animated.View>
+  );
+};
+```
+
+### 🎓 학습 포인트
+
+#### 1. Animated.Value를 Props로 공유하기
+
+하나의 `Animated.Value`를 여러 컴포넌트에서 공유하여 일관된 애니메이션을 구현합니다.
+
+```tsx
+// src/youtubeMusic/YoutubeMusic.tsx
+const playlistAnim = useRef(new Animated.Value(0)).current;
+
+return (
+  <>
+    <Playlist playlistAnim={playlistAnim} />
+    <Bottom playlistAnim={playlistAnim} />
+  </>
+);
+```
+
+#### 2. interpolate의 고급 활용
+
+하나의 애니메이션 값으로 여러 스타일 속성을 동시에 제어합니다.
+
+```tsx
+// 동일한 playlistAnim으로 다양한 속성 제어
+{
+  width: playlistAnim.interpolate({ ... }),
+  height: playlistAnim.interpolate({ ... }),
+  marginTop: playlistAnim.interpolate({ ... }),
+  opacity: playlistAnim.interpolate({ ... }),
+}
+```
+
+#### 3. PanResponder와 Animated의 결합
+
+제스처 입력을 애니메이션 값으로 직접 변환하여 부드러운 인터랙션을 구현합니다.
+
+```tsx
+onPanResponderMove: (evt, gestureState) => {
+  // 제스처 값을 직접 애니메이션 값으로 설정
+  playlistAnim.setValue(-gestureState.dy);
+};
+```
+
+#### 4. 상태 기반 조건부 애니메이션
+
+현재 UI 상태에 따라 다른 애니메이션을 실행합니다.
+
+```tsx
+const playlistRef = useRef('mini'); // 상태 추적
+
+// 상태에 따라 다른 로직 실행
+if (playlistRef.current === 'mini') {
+  // Mini 상태 로직
+} else if (playlistRef.current === 'full') {
+  // Full 상태 로직
+}
+```
+
+---
+
+## 📖 참고 자료
+
+- [React Native Animated API 공식 문서](https://reactnative.dev/docs/animated)
+- [React Native PanResponder 공식 문서](https://reactnative.dev/docs/panresponder)
+- [React Native Easing 함수](https://reactnative.dev/docs/easing)
+- [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
