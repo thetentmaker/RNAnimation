@@ -4,6 +4,7 @@ import {
   PanResponder,
   StyleSheet,
   useWindowDimensions,
+  View,
 } from 'react-native';
 import PlaylistMini from './PlaylistMini';
 import { useRef } from 'react';
@@ -12,7 +13,7 @@ interface PlaylistProps {
   playlistAnim: Animated.Value;
 }
 const Playlist = ({ playlistAnim }: PlaylistProps) => {
-  const { height } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const playlistRef = useRef('mini');
 
   const panResponder = useRef(
@@ -83,15 +84,43 @@ const Playlist = ({ playlistAnim }: PlaylistProps) => {
             outputRange: [60, 160],
           }),
           alignItems: 'center',
-          paddingLeft: 10,
+          paddingLeft: playlistAnim.interpolate({
+            inputRange: [0, height / 2, height],
+            outputRange: [10, width * 0.1, width * 0.1],
+          }),
         }}
       >
-        <Image
-          source={{ uri: 'https://picsum.photos/50' }}
-          style={styles.image}
-        />
+        <Animated.View
+          style={{
+            width: playlistAnim.interpolate({
+              inputRange: [0, height / 2, height],
+              outputRange: [50, width * 0.8, width * 0.8],
+            }),
+            height: playlistAnim.interpolate({
+              inputRange: [0, height / 2, height],
+              outputRange: [50, width * 0.8, width * 0.8],
+            }),
+          }}
+        >
+          <Image
+            source={{ uri: 'https://picsum.photos/50' }}
+            style={styles.image}
+          />
+        </Animated.View>
         {/* <PlaylistFull /> */}
-        <PlaylistMini />
+        <Animated.View
+          style={[
+            {
+              flex: 1,
+              opacity: playlistAnim.interpolate({
+                inputRange: [0, height / 2],
+                outputRange: [1, 0],
+              }),
+            },
+          ]}
+        >
+          <PlaylistMini />
+        </Animated.View>
       </Animated.View>
     </>
   );
@@ -105,7 +134,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   image: {
-    width: 50,
-    height: 50,
+    width: '100%',
+    height: '100%',
+  },
+  playlistContainer: {
+    flex: 1,
   },
 });
