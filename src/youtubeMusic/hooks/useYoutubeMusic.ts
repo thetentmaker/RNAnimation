@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 
 const useYoutubeMusic = () => {
-  const scrollStartRef = useRef<number>(0);
+  const scrollStartRef = useRef(0);
   const headerAnim = useRef(new Animated.Value(0)).current;
   const showHeaderRef = useRef(true);
   const headerBgAnim = useRef(new Animated.Value(0)).current;
@@ -18,6 +18,7 @@ const useYoutubeMusic = () => {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;
     const dy = y - scrollStartRef.current;
+    console.log('dy=', dy, scrollStartRef.current);
     // console.log('dy', dy);
     //위로 올라가는 헤더
     if (0 < dy && showHeaderRef.current) {
@@ -29,12 +30,13 @@ const useYoutubeMusic = () => {
     }
     // headerAnim.setValue(dy);
     //헤더 배경 애니메이션
-    headerBgAnim.setValue(dy);
+    headerBgAnim.setValue(y);
   };
   const onScrollEndDrag = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;
     const dy = y - scrollStartRef.current;
 
+    // 위로 올라가는 헤더
     if (0 < dy && showHeaderRef.current) {
       Animated.spring(headerAnim, {
         toValue: 100,
@@ -43,6 +45,7 @@ const useYoutubeMusic = () => {
 
       showHeaderRef.current = false;
     }
+    // 아래로 내려가는 헤더
     if (dy < 0 && !showHeaderRef.current) {
       Animated.spring(headerAnim, {
         toValue: 0,
@@ -54,10 +57,10 @@ const useYoutubeMusic = () => {
   };
 
   return {
-    headerAnim,
     onScrollBeginDrag,
-    onScrollEndDrag,
     onScroll,
+    onScrollEndDrag,
+    headerAnim,
     headerBgAnim,
   };
 };
