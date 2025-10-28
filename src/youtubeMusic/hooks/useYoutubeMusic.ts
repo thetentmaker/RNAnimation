@@ -18,7 +18,7 @@ const useYoutubeMusic = () => {
   const onScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
     const y = e.nativeEvent.contentOffset.y;
     const dy = y - scrollStartRef.current;
-    console.log('dy', dy);
+    // console.log('dy', dy);
     //위로 올라가는 헤더
     if (0 < dy && showHeaderRef.current) {
       headerAnim.setValue(dy);

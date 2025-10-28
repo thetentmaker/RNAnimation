@@ -1,4 +1,4 @@
-import { ScrollView, View, StyleSheet, Text } from 'react-native';
+import { ScrollView, View, StyleSheet, Animated } from 'react-native';
 import { useRef, useState } from 'react';
 import HeaderBackground from './components/header/HeaderBackground';
 import CategoryHeader from './components/header/CategoryHeader';
@@ -11,6 +11,10 @@ import useYoutubeMusic from './hooks/useYoutubeMusic';
 import Playlist from './components/playlist/Playlist';
 
 const YoutubeMusic = () => {
+  const renderCount = useRef(0);
+  ++renderCount.current;
+  console.log('renderCount', renderCount.current);
+
   const [selectedCategory, setSelectedCategory] = useState<number | undefined>(
     undefined,
   );
@@ -21,9 +25,9 @@ const YoutubeMusic = () => {
     headerAnim,
     headerBgAnim,
   } = useYoutubeMusic();
-  const renderCount = useRef(0);
-  ++renderCount.current;
-  console.log('renderCount', renderCount.current);
+
+  const playlistAnim = useRef(new Animated.Value(0)).current;
+
   return (
     <View style={styles.container}>
       <HeaderBackground
@@ -55,8 +59,8 @@ const YoutubeMusic = () => {
           <MusicListLarge />
         </View>
       </ScrollView>
-      <Playlist />
-      <Bottom />
+      <Playlist playlistAnim={playlistAnim} />
+      <Bottom playlistAnim={playlistAnim} />
     </View>
   );
 };
