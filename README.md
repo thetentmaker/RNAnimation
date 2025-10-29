@@ -11,6 +11,7 @@ React Native에서 제공하는 다양한 애니메이션 기법을 학습하고
 1. [Animated 심화 실습](#1-animated-심화-실습)
 2. [PanResponder를 활용한 제스처 인식](#2-panresponder를-활용한-제스처-인식)
 3. [유튜브 뮤직 클론](#3-유튜브-뮤직-클론)
+4. [모바일페이 클론코딩](#4-모바일페이-클론코딩)
 
 ---
 
@@ -771,15 +772,6 @@ const panResponder = PanResponder.create({
 
 ---
 
-## 📖 참고 자료
-
-- [React Native Animated API 공식 문서](https://reactnative.dev/docs/animated)
-- [React Native PanResponder 공식 문서](https://reactnative.dev/docs/panresponder)
-- [React Native Easing 함수](https://reactnative.dev/docs/easing)
-- [useNativeDriver 사용 가이드](https://reactnative.dev/docs/animations#using-the-native-driver)
-
----
-
 ## 3. 유튜브 뮤직 클론
 
 `Animated` API와 `PanResponder`를 결합하여 실제 앱과 유사한 복잡한 인터랙션을 구현하는 프로젝트입니다.
@@ -1114,6 +1106,291 @@ if (playlistRef.current === 'mini') {
 } else if (playlistRef.current === 'full') {
   // Full 상태 로직
 }
+```
+
+---
+
+## 4. 모바일페이 클론코딩
+
+`Animated` API와 `PanResponder`를 활용하여 모바일 결제 앱의 카드 UI를 구현하는 프로젝트입니다.
+
+| 접힌 상태 (Fold) | 펼쳐진 상태 (Unfold) | 카드 슬라이더 |
+|:---:|:---:|:---:|
+| <img src="./screenshot/ch10_mobilepay_fold.jpg" width="200"/> | <img src="./screenshot/ch10_mobilepay_unfold.jpg" width="200"/> | <img src="./screenshot/ch10_mobilepay_slider.jpg" width="200"/> |
+
+### 📝 설명
+
+모바일 결제 앱의 카드 스택 UI를 구현합니다. 여러 개의 카드가 겹쳐진 상태에서 위아래로 드래그하여 펼치거나 접을 수 있고, 좌우로 스와이프하여 카드를 전환할 수 있습니다.
+
+### 🎯 주요 구현 기능
+
+1. **카드 펼치기/접기 (Fold/Unfold)**
+   - 아래로 드래그하면 카드가 펼쳐짐
+   - 위로 드래그하면 카드가 다시 접힘
+   - 펼쳐진 상태에서 약간의 회전 효과
+
+2. **카드 좌우 슬라이더**
+   - 왼쪽으로 스와이프하여 다음 카드로 이동
+   - 오른쪽으로 스와이프하여 이전 카드로 이동
+   - 접힌 상태(fold)에서만 작동
+
+3. **드래그 방향 감지**
+   - x축 드래그와 y축 드래그를 구분하여 처리
+   - `Math.abs(dx) > Math.abs(dy)`로 방향 판단
+
+### 💻 핵심 코드
+
+#### 1. 카드 데이터 및 애니메이션 값 설정
+
+<img src="./screenshot/ch10_mobilepay_unfold.jpg" width="200"/>
+
+```tsx
+// src/mobilePay/MobilePay.tsx
+const MobilePay = () => {
+  const cards = [
+    { color: '#aaa', xAnim: useRef(new Animated.Value(0)).current },
+    { color: '#bbb', xAnim: useRef(new Animated.Value(0)).current },
+    { color: '#ccc', xAnim: useRef(new Animated.Value(0)).current },
+    { color: '#ddd', xAnim: useRef(new Animated.Value(0)).current },
+    { color: '#eee', xAnim: useRef(new Animated.Value(0)).current },
+    { color: '#f2f2f2', xAnim: useRef(new Animated.Value(0)).current },
+  ];
+
+  const [focus, setFocus] = useState(5); // 현재 포커스된 카드 인덱스
+  const yAnim = useRef(new Animated.Value(0)).current; // 카드 펼치기/접기
+  const rotateZAnim = useRef(new Animated.Value(0)).current; // 회전 효과
+  const cardRef = useRef<string>('fold'); // 'fold' 또는 'unfold'
+  // ...
+};
+```
+
+#### 2. 드래그 방향 감지 및 처리
+
+<img src="./screenshot/ch10_mobilepay_slider.jpg" width="200"/>
+
+```tsx
+// src/mobilePay/MobilePay.tsx:51-84
+const panResponder = PanResponder.create({
+  onMoveShouldSetPanResponder: () => true,
+  onPanResponderMove: (event, gesture) => {
+    const { dy, dx } = gesture;
+
+    // x축 드래그와 y축 드래그 중 어느 쪽이 더 큰지 판단
+    const xSlider = Math.abs(dx) > Math.abs(dy);
+    const ySlider = Math.abs(dy) > Math.abs(dx);
+
+    // x축 슬라이더: 접힌 상태에서만 작동
+    if (xSlider) {
+      // 왼쪽으로 일정 이상 스와이프 했을 때
+      if (dx < -5 && cardRef.current === 'fold' && 0 <= focus) {
+        cards[focus].xAnim.setValue(dx);
+      }
+    }
+
+    // y축 슬라이더
+    if (ySlider) {
+      // Fold 상태에서 아래로 드래그: 카드 펼치기
+      if (5 < dy && dy < 100 && cardRef.current === 'fold') {
+        yAnim.setValue(dy);
+      }
+      // Unfold 상태에서 아래로 드래그: 회전 효과
+      if (5 < dy && dy < 100 && cardRef.current === 'unfold') {
+        rotateZAnim.setValue(dy);
+      }
+      // Unfold 상태에서 위로 드래그: 카드 접기
+      if (-75 < dy && dy < 5 && cardRef.current === 'unfold') {
+        yAnim.setValue(65 + dy);
+      }
+    }
+  },
+  // ...
+});
+```
+
+#### 3. 드래그 종료 처리
+
+```tsx
+// src/mobilePay/MobilePay.tsx:85-146
+onPanResponderEnd(e, gestureState) {
+  const { dy, dx } = gestureState;
+  const xSlider = Math.abs(dx) > Math.abs(dy);
+  const ySlider = Math.abs(dy) > Math.abs(dx);
+
+  // x축 슬라이더: 카드 전환
+  if (xSlider) {
+    // 왼쪽으로 스와이프: 다음 카드로 이동
+    if (dx < -5 && cardRef.current === 'fold' && 0 <= focus) {
+      Animated.timing(cards[focus].xAnim, {
+        toValue: -width * 0.8, // 왼쪽으로 완전히 이동
+        duration: 100,
+        useNativeDriver: true,
+      }).start(finished => {
+        if (finished) {
+          setFocus(prevFocus => prevFocus - 1); // 포커스 카드 변경
+        }
+      });
+    }
+
+    // 오른쪽으로 스와이프: 이전 카드로 이동
+    if (5 < dx && cardRef.current === 'fold' && focus < 5) {
+      Animated.timing(cards[focus + 1].xAnim, {
+        toValue: 0, // 원래 위치로 복귀
+        duration: 100,
+        useNativeDriver: true,
+      }).start(finished => {
+        if (finished) {
+          setFocus(prevFocus => prevFocus + 1);
+        }
+      });
+    }
+  }
+
+  // y축 슬라이더: 카드 펼치기/접기
+  if (ySlider) {
+    // 아래로 드래그: Unfold 상태로 전환
+    if (5 < dy) {
+      Animated.spring(yAnim, {
+        toValue: 65, // 펼쳐진 위치
+        useNativeDriver: true,
+      }).start();
+      cardRef.current = 'unfold';
+
+      // Unfold 상태에서 회전 효과 복귀
+      if (cardRef.current === 'unfold') {
+        Animated.spring(rotateZAnim, {
+          toValue: 0,
+          useNativeDriver: true,
+        }).start();
+      }
+    }
+
+    // 위로 드래그: Fold 상태로 전환
+    if (dy < -5) {
+      Animated.spring(yAnim, {
+        toValue: 0, // 접힌 위치
+        useNativeDriver: true,
+      }).start();
+      cardRef.current = 'fold';
+    }
+  }
+}
+```
+
+#### 4. Animated.multiply를 활용한 카드별 이동 거리 계산
+
+```tsx
+// src/mobilePay/MobilePay.tsx:158-180
+{cards.map((card, index) => {
+  // 중앙 카드를 기준점(0)으로 설정
+  const centerIndex = Math.floor(cards.length / 2); // 6개 카드의 경우 3
+
+  // 각 카드의 위치 계산: -3, -2, -1, 0, 1, 2
+  const multiplayValue = useRef(
+    new Animated.Value(index - centerIndex),
+  ).current;
+
+  // yAnim과 곱하여 각 카드의 이동 거리 계산
+  // 예: yAnim이 65일 때, index=0인 카드는 -195, index=5인 카드는 130 이동
+  const translateY = Animated.multiply(yAnim, multiplayValue);
+
+  return (
+    <Animated.View
+      key={index}
+      style={{
+        transform: [
+          { translateY: translateY },     // 상하 이동 (펼치기/접기)
+          { translateX: card.xAnim },     // 좌우 이동 (슬라이더)
+          {
+            rotateZ: rotateZAnim.interpolate({
+              inputRange: [0, 20],
+              outputRange: ['0deg', '2deg'], // 약간의 회전 효과
+            }),
+          },
+        ],
+        position: 'absolute',
+        backgroundColor: card.color,
+        width: width * 0.7,
+        height: width * 0.7 * 0.58,
+        marginTop: index * 20, // 기본 겹침 효과
+        borderRadius: 15,
+        // Shadow 효과
+        shadowColor: '#000',
+        shadowOffset: { width: -3, height: -3 },
+        shadowOpacity: 0.2,
+        shadowRadius: 10,
+        elevation: 5,
+      }}
+    />
+  );
+})}
+```
+
+### 🎓 학습 포인트
+
+#### 1. Animated.multiply를 활용한 효율적인 애니메이션
+
+하나의 애니메이션 값(`yAnim`)을 여러 카드에 다른 비율로 적용하여 펼침 효과를 구현합니다.
+
+```tsx
+// 각 카드마다 다른 이동 거리를 가지도록 설정
+const multiplayValue = new Animated.Value(index - centerIndex); // -3, -2, -1, 0, 1, 2
+const translateY = Animated.multiply(yAnim, multiplayValue);
+
+// yAnim이 65로 변할 때:
+// index 0: translateY = 65 × (-3) = -195 (위로 이동)
+// index 3: translateY = 65 × 0 = 0 (정지)
+// index 5: translateY = 65 × 2 = 130 (아래로 이동)
+```
+
+#### 2. 드래그 방향 감지
+
+x축과 y축 드래그를 구분하여 서로 다른 애니메이션을 적용합니다.
+
+```tsx
+const xSlider = Math.abs(dx) > Math.abs(dy); // 가로 방향이 더 크면 true
+const ySlider = Math.abs(dy) > Math.abs(dx); // 세로 방향이 더 크면 true
+
+// 조건에 따라 다른 로직 실행
+if (xSlider) {
+  // 좌우 슬라이더 로직
+}
+if (ySlider) {
+  // 상하 펼치기/접기 로직
+}
+```
+
+#### 3. 상태 기반 조건부 제스처 처리
+
+카드의 현재 상태(`fold` 또는 `unfold`)에 따라 다른 제스처를 처리합니다.
+
+```tsx
+const cardRef = useRef<string>('fold'); // 현재 상태 저장
+
+// Fold 상태에서만 좌우 슬라이더 작동
+if (dx < -5 && cardRef.current === 'fold' && 0 <= focus) {
+  cards[focus].xAnim.setValue(dx);
+}
+
+// Unfold 상태에서만 회전 효과 작동
+if (5 < dy && dy < 100 && cardRef.current === 'unfold') {
+  rotateZAnim.setValue(dy);
+}
+```
+
+#### 4. 애니메이션 완료 콜백 활용
+
+애니메이션이 완료된 후 상태를 업데이트하여 순차적인 동작을 보장합니다.
+
+```tsx
+Animated.timing(cards[focus].xAnim, {
+  toValue: -width * 0.8,
+  duration: 100,
+  useNativeDriver: true,
+}).start(finished => {
+  if (finished) {
+    setFocus(prevFocus => prevFocus - 1); // 애니메이션 완료 후 포커스 변경
+  }
+});
 ```
 
 ---
